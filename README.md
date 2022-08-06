@@ -1,10 +1,6 @@
 # Slider
 
-A horizontal flexbox slideshow component. Totally has nothing to do with food.
-
-## Build Your Own Web Interactions
-
-This solution is intended to accompany [Web Interaction for Everyone](https://webinteract.io/), an online educational course that helps you to learn modern web interaction development techniques. Learn how to build your own web interactions by following the lessons found at [webinteract.io](https://webinteract.io/).
+A horizontal flexbox slideshow component. 
 
 ## Getting Started
 
