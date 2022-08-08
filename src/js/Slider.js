@@ -1,9 +1,19 @@
 export default class Slider {
     /**
-     *
-     * @param options
+     * Instantiate a new slider
+     * @param {Options} options - Component configuration options
+     * 1. attr - data attribute for defining slider
+     * 2. sliderContainer - slider container class
+     * 3. slider - slider class
      */
     constructor(options) {
+
+        /**
+         * Slider component configuration
+         * @type {{slider: string, sliderContainer: string, attr: string} & Options}
+         *
+         */
+
         this.config = Object.assign({
             attr: 'data-slider',
             sliderContainer: '.slider',
@@ -14,10 +24,16 @@ export default class Slider {
     }
 
     /**
-     *
+     * Initialize component
+     * @return {void}
      */
 
     init() {
+
+        /**
+         * Component state
+         * @type {State}
+         */
 
         this.state = {
             index: 0,
@@ -42,7 +58,8 @@ export default class Slider {
     }
 
     /**
-     *
+     * Update slider state
+     * @return {void}
      */
 
     setState() {
@@ -60,8 +77,9 @@ export default class Slider {
     }
 
     /**
-     *
-     * @param forward
+     * Navigate slider forwards of backwards
+     * @param {HTMLElement} el - Element from which to begin traversal
+     * @param {boolean} forward - Navigate forward?
      */
 
     navigate(el, forward = true) {
@@ -74,8 +92,9 @@ export default class Slider {
     }
 
     /**
-     *
-     * @param slider
+     * Set slider width based on child count
+     * @param {HTMLElement} slider - Slider element
+     * @return {void}
      */
 
     setSliderWidth(slider) {
@@ -84,8 +103,9 @@ export default class Slider {
 
 
     /**
-     *
-     * @param el
+     * Load slider state from given child Element
+     * @param {HTMLElement} el - Element from which to begin traversal to find slider state
+     * @return {void}
      */
 
     loadState(el) {
@@ -103,7 +123,7 @@ export default class Slider {
     }
 
     /**
-     *
+     *  Get current slider slide index
      * @return {number}
      */
 
@@ -115,8 +135,8 @@ export default class Slider {
     }
 
     /**
-     *
-     * @param target
+     * Click listener
+     * @param {HTMLElement} target - Click target
      */
 
     click({target}) {
@@ -129,12 +149,14 @@ export default class Slider {
     }
 
     /**
-     *
-     * @param target
-     * @param touchesStart
+     * Touchstart listener
+     * @param {HTMLElement} target - Touch target
+     * @param {TouchList} touchesStart - Touchstart event list
      */
 
     touchStart({target, changedTouches: touchesStart}) {
+
+        console.log(touchesStart)
 
         if (!target.closest(`[${this.config.attr}]`)) return;
 
@@ -147,8 +169,8 @@ export default class Slider {
     }
 
     /**
-     *
-     * @param touchesMove
+     * Touchmove listener
+     * @param {TouchList} touchesMove - Touchmove event list
      */
 
     touchMove({changedTouches: touchesMove}) {
@@ -161,7 +183,7 @@ export default class Slider {
     }
 
     /**
-     *
+     * Touchend listener
      */
 
     touchEnd() {
@@ -181,7 +203,7 @@ export default class Slider {
     }
 
     /**
-     *
+     * Get swiping distance in percents
      * @return {number}
      */
 

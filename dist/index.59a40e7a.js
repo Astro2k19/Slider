@@ -542,10 +542,17 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class Slider {
     /**
-     *
-     * @param options
+     * Instantiate a new slider
+     * @param {Options} options - Component configuration options
+     * 1. attr - data attribute for defining slider
+     * 2. sliderContainer - slider container class
+     * 3. slider - slider class
      */ constructor(options){
-        this.config = Object.assign({
+        /**
+         * Slider component configuration
+         * @type {{slider: string, sliderContainer: string, attr: string} & Options}
+         *
+         */ this.config = Object.assign({
             attr: "data-slider",
             sliderContainer: ".slider",
             slider: ".slides"
@@ -553,9 +560,13 @@ class Slider {
         this.init();
     }
     /**
-     *
+     * Initialize component
+     * @return {void}
      */ init() {
-        this.state = {
+        /**
+         * Component state
+         * @type {State}
+         */ this.state = {
             index: 0,
             length: 0,
             slider: null,
@@ -574,7 +585,8 @@ class Slider {
         });
     }
     /**
-     *
+     * Update slider state
+     * @return {void}
      */ setState() {
         if (!this.state.slider) return;
         if (this.state.index < 0) this.state.index = 0;
@@ -583,22 +595,25 @@ class Slider {
         this.state.slider.style.left = `${this.state.index * -100 + this.caclPercetageDistance()}%`;
     }
     /**
-     *
-     * @param forward
+     * Navigate slider forwards of backwards
+     * @param {HTMLElement} el - Element from which to begin traversal
+     * @param {boolean} forward - Navigate forward?
      */ navigate(el, forward = true) {
         this.loadState(el);
         forward ? this.state.index++ : this.state.index--;
         this.setState();
     }
     /**
-     *
-     * @param slider
+     * Set slider width based on child count
+     * @param {HTMLElement} slider - Slider element
+     * @return {void}
      */ setSliderWidth(slider) {
         slider.style.width = `${slider.childElementCount * 100}%`;
     }
     /**
-     *
-     * @param el
+     * Load slider state from given child Element
+     * @param {HTMLElement} el - Element from which to begin traversal to find slider state
+     * @return {void}
      */ loadState(el) {
         this.state.sliderContainer = el.closest(this.config.sliderContainer);
         if (!this.state.sliderContainer) throw new Error("The slider container doesnt exist");
@@ -609,7 +624,7 @@ class Slider {
         this.state.index = this.getCurrentIndex();
     }
     /**
-     *
+     *  Get current slider slide index
      * @return {number}
      */ getCurrentIndex() {
         let left = this.state.slider.style.left || "0%";
@@ -617,8 +632,8 @@ class Slider {
         return Math.round(left / 100);
     }
     /**
-     *
-     * @param target
+     * Click listener
+     * @param {HTMLElement} target - Click target
      */ click({ target  }) {
         const prev = target.matches(`[${this.config.attr}-prev]`, `[${this.config.attr}-prev] *`);
         const next = !prev && target.matches(`[${this.config.attr}-next]`, `[${this.config.attr}-next] *`);
@@ -626,10 +641,11 @@ class Slider {
         this.navigate(target, next);
     }
     /**
-     *
-     * @param target
-     * @param touchesStart
+     * Touchstart listener
+     * @param {HTMLElement} target - Touch target
+     * @param {TouchList} touchesStart - Touchstart event list
      */ touchStart({ target , changedTouches: touchesStart  }) {
+        console.log(touchesStart);
         if (!target.closest(`[${this.config.attr}]`)) return;
         if (touchesStart.length !== 1) return;
         this.loadState(target);
@@ -637,15 +653,15 @@ class Slider {
         this.state.isSwiping = true;
     }
     /**
-     *
-     * @param touchesMove
+     * Touchmove listener
+     * @param {TouchList} touchesMove - Touchmove event list
      */ touchMove({ changedTouches: touchesMove  }) {
         if (!this.state.isSwiping) return;
         this.state.swipingDistance = touchesMove[0].screenX - this.state.start;
         this.setState();
     }
     /**
-     *
+     * Touchend listener
      */ touchEnd() {
         const distance = this.caclPercetageDistance();
         if (distance <= -this.state.threshold) this.navigate(this.state.sliderContainer, true);
@@ -655,7 +671,7 @@ class Slider {
         this.setState();
     }
     /**
-     *
+     * Get swiping distance in percents
      * @return {number}
      */ caclPercetageDistance() {
         return this.state.swipingDistance / this.state.width * 100;
